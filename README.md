@@ -1,13 +1,24 @@
-# DocMan
+# 📄 DocMan Hono
 
-A secure, multi-tenant document management system built with Astro SSR, Cloudflare Workers, and Supabase.
+A high-performance, secure, and multi-tenant document management system. Rebuilt for speed using **Hono** and **Cloudflare Workers**, integrated with **Supabase** for database and authentication.
 
-## 🚀 Tech Stack
+---
 
-- **Framework:** [Astro](https://astro.build/) (Server-Side Rendering)
-- **Deployment:** [Cloudflare Workers](https://workers.cloudflare.com/) (`@astrojs/cloudflare` adapter)
+## ✨ Features
+
+- **Blazing Fast:** Built on Hono and deployed to Cloudflare's global network.
+- **Secure Auth:** Integrated with Supabase Auth (SSR) for seamless user management.
+- **Type Safe:** End-to-end type safety with TypeScript and Wrangler generated bindings.
+- **Cloud-Native:** Leverages Cloudflare Workers' latest features (Smart Placement, Observability).
+- **Multi-Tenant Ready:** Designed to handle multiple organizations and isolated data.
+
+## 🛠️ Tech Stack
+
+- **Framework:** [Hono](https://hono.dev/) (The ultra-fast web framework for Edge)
+- **Runtime:** [Cloudflare Workers](https://workers.cloudflare.com/)
 - **Database & Auth:** [Supabase](https://supabase.com/)
-- **Secret Management:** Cloudflare Access Secrets Store
+- **State Management:** [Supabase SSR](https://supabase.com/docs/guides/auth/server-side/hono)
+- **Deployment:** [Wrangler](https://developers.cloudflare.com/workers/wrangler/)
 
 ## 📂 Project Structure
 
@@ -15,57 +26,71 @@ A secure, multi-tenant document management system built with Astro SSR, Cloudfla
 /
 ├── public/                 # Static assets (images, icons)
 ├── src/
-│   ├── components/         # Reusable UI components
-│   ├── layouts/            # Page layouts and global styles
-│   ├── lib/                # Utilities and Supabase server clients
-│   ├── pages/              # File-based routing (pages & API endpoints)
-│   ├── env.d.ts            # TypeScript declarations for Cloudflare & Supabase
-│   └── middleware.ts       # Route guarding and Supabase session validation
+│   ├── index.ts            # Main application entry point & Hono instance
+│   ├── middleware/         # Hono middleware (Auth, Logging, etc.)
+│   ├── routes/             # API and page route handlers
+│   └── views/              # UI components and templates
 ├── supabase/
 │   └── migrations/         # Supabase PostgreSQL schema migrations
-├── astro.config.mjs        # Astro configuration
-└── wrangler.jsonc          # Cloudflare Worker configuration
+├── wrangler.jsonc          # Cloudflare Worker configuration
+└── tsconfig.json           # TypeScript configuration
 ```
 
-## 🔐 Environment Variables
+## ⚙️ Configuration
 
-This project uses Cloudflare's Secret Store feature for production bindings. You must create the following secrets in Cloudflare:
-
-- `SUPABASE_URL`
-- `SUPABASE_KEY`
-
-To create these secrets, use the Wrangler CLI:
-```sh
-npx wrangler secrets-store secret create [YOUR_VALUE] --name SUPABASE_KEY --scopes workers
-npx wrangler secrets-store secret create [YOUR_VALUE] --name SUPABASE_URL --scopes workers
-```
+### Environment Variables
 
 For local development, create a `.dev.vars` file in the root directory:
+
 ```env
-SUPABASE_URL="your-supabase-project-url"
-SUPABASE_KEY="your-supabase-anon-key"
+SUPABASE_URL="https://your-project.supabase.co"
+SUPABASE_KEY="your-anon-key"
 ```
 
-## 🧞 Commands
+### Cloudflare Secrets
 
-All commands are run from the root of the project, from a terminal:
+In production, these values should be set as Cloudflare secrets:
 
-| Command                   | Action                                                                |
-| :------------------------ | :-------------------------------------------------------------------- |
-| `npm install`             | Installs dependencies                                                 |
-| `npm run dev`             | Starts local Vite dev server (Astro only, limited Cloudflare context) |
-| `npm run build`           | Builds the production site to `./dist/`                               |
-| `npx wrangler dev`        | **Recommended:** Preview your build locally using workerd             |
-| `npx wrangler deploy`     | Deploys your application to Cloudflare Workers                        |
-
-> **Note:** Do not use `npm run preview`. Because this project relies on Cloudflare-specific runtime bindings (`cloudflare:workers`), you must preview the production build using `npx wrangler dev`.
-
-## 🚢 Deployment
-
-To deploy to Cloudflare Workers, simply run:
-
-```sh
-npm run build && npx wrangler deploy
+```bash
+npx wrangler secret put SUPABASE_URL
+npx wrangler secret put SUPABASE_KEY
 ```
 
-Make sure your Cloudflare account has permissions for the Secret Store bindings declared in `wrangler.jsonc`.
+## 🚀 Getting Started
+
+### 1. Installation
+
+```bash
+npm install
+```
+
+### 2. Local Development
+
+Start the development server with hot-reloading:
+
+```bash
+npm run dev
+```
+
+The server will be available at `http://localhost:8787`.
+
+### 3. Deployment
+
+Deploy your application to Cloudflare Workers:
+
+```bash
+npm run deploy
+```
+
+---
+
+## 🛡️ Security & Observability
+
+- **Observability:** Enabled by default via `wrangler.jsonc`. Logs and traces can be viewed in the Cloudflare Dashboard.
+- **Node.js Compatibility:** Enabled for seamless integration with libraries like `@supabase/ssr`.
+
+---
+
+<p align="center">
+  Built with ❤️ using Hono & Cloudflare
+</p>
