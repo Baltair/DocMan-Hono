@@ -24,5 +24,9 @@
 			"store_id": "8071bcc9ea0142c2b3b395b85a3d3fa7",
 			"secret_name": "SUPABASE_URL"
 		}
-	]
+	],
+	"main": "src/index.ts",
+	"assets": {
+		"directory": "./public"
+	}
 }
