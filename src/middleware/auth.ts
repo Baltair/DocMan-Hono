@@ -2,16 +2,21 @@ import { createServerClient, parseCookieHeader, serializeCookieHeader } from '@s
 import type { Context, Next } from 'hono'
 import { getCookie, setCookie } from 'hono/cookie'
 
-function extractSecret(secret: any): string {
+async function extractSecret(secret: any): Promise<string> {
   if (typeof secret === 'string') return secret;
-  if (secret && typeof secret === 'object' && 'secret' in secret) return secret.secret;
-  if (secret && typeof secret === 'object' && 'value' in secret) return secret.value;
+  if (secret && typeof secret === 'object') {
+    if (typeof secret.get === 'function') {
+      return await secret.get();
+    }
+    if ('secret' in secret) return secret.secret;
+    if ('value' in secret) return secret.value;
+  }
   return '';
 }
 
-export const createSupabaseClient = (c: Context) => {
-  const supabaseUrl = extractSecret(c.env.PUBLIC_SUPABASE_URL || c.env.SUPABASE_URL)
-  const supabaseKey = extractSecret(c.env.PUBLIC_SUPABASE_KEY || c.env.SUPABASE_KEY)
+export const createSupabaseClient = async (c: Context) => {
+  const supabaseUrl = await extractSecret(c.env.PUBLIC_SUPABASE_URL || c.env.SUPABASE_URL)
+  const supabaseKey = await extractSecret(c.env.PUBLIC_SUPABASE_KEY || c.env.SUPABASE_KEY)
 
   console.log("Supabase Client Init - URL:", supabaseUrl)
   console.log("Supabase Client Init - Key Length:", supabaseKey?.length)
@@ -36,7 +41,7 @@ export const createSupabaseClient = (c: Context) => {
 }
 
 export const authMiddleware = async (c: Context, next: Next) => {
-  const supabase = createSupabaseClient(c)
+  const supabase = await createSupabaseClient(c)
   
   // Refresh session if needed and get the user
   const { data: { user } } = await supabase.auth.getUser()

@@ -4,7 +4,7 @@ import { createSupabaseClient } from '../middleware/auth'
 export const authRouter = new Hono()
 
 authRouter.post('/login', async (c) => {
-  const supabase = createSupabaseClient(c)
+  const supabase = await createSupabaseClient(c)
   const body = await c.req.parseBody()
   
   const email = body.email as string
@@ -25,7 +25,7 @@ authRouter.post('/login', async (c) => {
 })
 
 authRouter.post('/register', async (c) => {
-  const supabase = createSupabaseClient(c)
+  const supabase = await createSupabaseClient(c)
   const body = await c.req.parseBody()
   
   const email = body.email as string
@@ -55,7 +55,7 @@ authRouter.post('/register', async (c) => {
 })
 
 authRouter.post('/logout', async (c) => {
-  const supabase = createSupabaseClient(c)
+  const supabase = await createSupabaseClient(c)
   await supabase.auth.signOut()
   return c.redirect('/')
 })
