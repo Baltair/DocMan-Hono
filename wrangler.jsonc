@@ -13,8 +13,16 @@
 			"enabled": true
 		}
 	},
-	"main": "src/index.ts",
-	"assets": {
-		"directory": "./public"
-	}
+	"secrets_store_secrets": [
+		{
+			"binding": "SUPABASE_KEY",
+			"store_id": "8071bcc9ea0142c2b3b395b85a3d3fa7",
+			"secret_name": "SUPABASE_KEY"
+		},
+		{
+			"binding": "SUPABASE_URL",
+			"store_id": "8071bcc9ea0142c2b3b395b85a3d3fa7",
+			"secret_name": "SUPABASE_URL"
+		}
+	]
 }
