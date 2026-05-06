@@ -15,19 +15,6 @@ export const layout = (title: string, content: any) => html`
     <title>${title} | DocMan</title>
   </head>
   <body>
-    <header class="main-header">
-      <div class="container header-content">
-        <a href="/" class="logo">
-          <span class="logo-icon">D</span>
-          <span class="logo-text">DocMan</span>
-        </a>
-        <nav class="main-nav">
-          <a href="/dashboard" class="nav-link">Dashboard</a>
-          <a href="/documents" class="nav-link">Documents</a>
-          <a href="/contacts" class="nav-link">Contacts</a>
-        </nav>
-      </div>
-    </header>
     <div class="app-container">
       ${content}
     </div>

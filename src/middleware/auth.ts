@@ -2,11 +2,16 @@ import { createServerClient, parseCookieHeader, serializeCookieHeader } from '@s
 import type { Context, Next } from 'hono'
 import { getCookie, setCookie } from 'hono/cookie'
 
-async function extractSecret(secret: any): Promise<string> {
+async function extractSecret(secret: any, name: string): Promise<string> {
   if (typeof secret === 'string') return secret;
   if (secret && typeof secret === 'object') {
     if (typeof secret.get === 'function') {
-      return await secret.get();
+      try {
+        const val = await secret.get();
+        if (val) return val;
+      } catch (e) {
+        console.warn(`Failed to call .get() on secret [${name}]:`, e);
+      }
     }
     if ('secret' in secret) return secret.secret;
     if ('value' in secret) return secret.value;
@@ -15,8 +20,8 @@ async function extractSecret(secret: any): Promise<string> {
 }
 
 export const createSupabaseClient = async (c: Context) => {
-  const supabaseUrl = await extractSecret(c.env.PUBLIC_SUPABASE_URL || c.env.SUPABASE_URL)
-  const supabaseKey = await extractSecret(c.env.PUBLIC_SUPABASE_KEY || c.env.SUPABASE_KEY)
+  const supabaseUrl = await extractSecret(c.env.PUBLIC_SUPABASE_URL || c.env.SUPABASE_URL, 'SUPABASE_URL')
+  const supabaseKey = await extractSecret(c.env.PUBLIC_SUPABASE_KEY || c.env.SUPABASE_KEY, 'SUPABASE_KEY')
 
   console.log("Supabase Client Init - URL:", supabaseUrl)
   console.log("Supabase Client Init - Key Length:", supabaseKey?.length)

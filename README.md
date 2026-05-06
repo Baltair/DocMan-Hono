@@ -74,6 +74,16 @@ npm run dev
 
 The server will be available at `http://localhost:8787`.
 
+#### 🔐 Local Secrets (Secret Store)
+
+If you are using **Cloudflare Secret Store** (configured in `wrangler.jsonc`), you must run wrangler with the `--remote` flag to access the actual secrets during local development:
+
+```bash
+npx wrangler dev --remote
+```
+
+Alternatively, you can provide local overrides in a `.dev.vars` file, but ensure the binding names match.
+
 ### 3. Deployment
 
 Deploy your application to Cloudflare Workers:
