@@ -1,0 +1,20 @@
+{
+	"name": "docman",
+	"compatibility_date": "2025-05-21",
+	"compatibility_flags": [
+		"nodejs_compat"
+	],
+	"observability": {
+		"logs": {
+			"enabled": true,
+			"invocation_logs": true
+		},
+		"traces": {
+			"enabled": true
+		}
+	},
+	"main": "src/index.ts",
+	"assets": {
+		"directory": "./public"
+	}
+}
